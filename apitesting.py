@@ -1,13 +1,24 @@
 from fastapi import FastAPI
+import pandas as pd
+from fastapi import FastAPI, File, UploadFile
+from docheader import getHeader
+docHeaderAPI = FastAPI()
 
-app = FastAPI()
 
-
-@app.get("/")
+@docHeaderAPI.get("/")
 async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/mex")
-async def mexico():
-    return {"message": "Its raining mexic"}
+
+#Here is where the file will be uploaded
+@docHeaderAPI.post("/uploadfile/")
+async def create_upload_file(file: UploadFile = File(...)):
+    contents = await file.read()
+    #df = pd.read_csv(contents)
+    #list_of_column_names = list(df.columns)
+    fType = contents
+
+    #headers = getHeader(contents)
+    return {"filename": file.filename,
+            "fileType": fType}
