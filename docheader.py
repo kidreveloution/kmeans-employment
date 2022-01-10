@@ -1,11 +1,17 @@
 
 import pandas as pd
-from fastapi import FastAPI, File, UploadFile
 
 
-async def getHeader(file):
-    df = pd.read_csv(file)
+def getHeader(file):
+    f = open(file, 'r')
+
+    df = pd.read_csv(f)
     list_of_column_names = list(df.columns)
 
     print('List of column names : ',
         list_of_column_names)
+    return(list_of_column_names)
+
+
+if __name__ == '__main__':
+    getHeader()
