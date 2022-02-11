@@ -3,33 +3,37 @@ from sklearn.cluster import KMeans
 from tkinter import *
 from tkinter import filedialog as fd
 
-#filename = fd.askopenfilename()
 
-
+#Grab the cluster file
 df = pd.read_csv("cluster.csv")
 
+
+#Importing the files internally with only the important variables
 identifier = "Location ID"
 lat = "Latitude"
 long = "Longitude"
 maxClusters = 150
 
-#print(df.head)
+#Final File
 X=df.loc[:,[identifier,lat,long]]
-#K_clusters = range(1,maxClusters+1)
-#kmeans = [KMeans(n_clusters=i) for i in K_clusters]
-#Y_axis = df[['Latitude']]
-#X_axis = df[['Longitude']]
-#score = [kmeans[i].fit(Y_axis).score(Y_axis) for i in range(len(kmeans))]
 
 
+#Total Amount of clusters below
 numClusters = 150
+
+#Kmeans algorithm with init
 kmeans = KMeans(numClusters, init ='k-means++')
+#Adding in the cluster label for the points to add
 X['cluster_label'] = kmeans.fit_predict(X[X.columns[1:10]])
-centers = kmeans.cluster_centers_
-labels = kmeans.predict(X[X.columns[1:3]])
+
+#Grabbing the centers of the clusters
+centers = kmeans.cluster_centers_ #We'll go ahead and use these centers to find out optimal zipcodes later
+
 newdf = pd.DataFrame(X)
 
 print(newdf)
-print(labels)
-print(centers)
+
+newdf.to_csv('ProcessedFile.csv')
+#print(labels)
+#print(centers)
 
